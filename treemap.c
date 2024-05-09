@@ -52,13 +52,13 @@ void insertTreeMap(TreeMap *tree, void *key, void *value) {
     TreeNode *node = tree->root;
     TreeNode *parent = NULL;
 
+    // Buscamos el lugar adecuado para insertar el nuevo nodo
     while (node != NULL) {
-        // Si encontramos un nodo con la misma clave, no hacemos nada y salimos
+        parent = node;
+        // Si la clave ya existe en el árbol, no hacemos nada y salimos
         if (is_equal(tree, node->pair->key, key) == 1) {
             return;
         }
-
-        parent = node;
 
         // Determinamos si moverse hacia el hijo izquierdo o derecho según la comparación de claves
         if (tree->lower_than(key, node->pair->key) == 0) {
