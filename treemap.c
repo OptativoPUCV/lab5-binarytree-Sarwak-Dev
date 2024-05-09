@@ -46,31 +46,38 @@ TreeMap *createTreeMap(int (*lower_than)(void *key1, void *key2)) {
 }
 
 void insertTreeMap(TreeMap *tree, void *key, void *value) {
-  if (tree == NULL || tree->root == NULL)
-    return;
-  TreeNode *node = tree->root;
-    TreeNode *parent = NULL;
-    
-  while (node != NULL) {
-    if (is_equal(tree, node->pair->key, key) == 1) {
+    if (tree == NULL || tree->root == NULL)
         return;
+
+    TreeNode *node = tree->root;
+    TreeNode *parent = NULL;
+
+    while (node != NULL) {
+        // Si encontramos un nodo con la misma clave, no hacemos nada y salimos
+        if (is_equal(tree, node->pair->key, key) == 1) {
+            return;
+        }
+
+        parent = node;
+
+        // Determinamos si moverse hacia el hijo izquierdo o derecho según la comparación de claves
+        if (tree->lower_than(key, node->pair->key) == 0) {
+            node = node->left;
+        } else {
+            node = node->right;
+        }
     }
-    parent = node;
-    if (tree->lower_than(key, node->pair->key) == 1) {
-      node = node->left;
-    } 
-    else {
-      node = node->right;
+
+    // Creamos el nuevo nodo con la clave y el valor dados
+    TreeNode* newNode = createTreeNode(key, value);
+    newNode->parent = parent;
+
+    // Insertamos el nuevo nodo como hijo del nodo padre, dependiendo de la comparación de claves
+    if (tree->lower_than(key, parent->pair->key) == 0) {
+        parent->left = newNode;
+    } else {
+        parent->right = newNode;
     }
-    TreeNode* aux = createTreeNode(key, value);
-      aux->parent = parent;
-      if (tree->lower_than(key, parent->pair->key) == 1) {
-        parent->left = aux;
-      } 
-      else {
-          parent->right = aux;
-      }
-  }
 }
 
 TreeNode *minimum(TreeNode *x) { return NULL; }
