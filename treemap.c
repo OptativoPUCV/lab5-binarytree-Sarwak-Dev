@@ -53,11 +53,13 @@ void insertTreeMap(TreeMap *tree, void *key, void *value) {
     if (is_equal(tree, node->pair->key, key)) {
         return;
     }
-    else if (tree->lower_than(key, node->pair->key)) {
+    else if (tree->lower_than(key, node->pair->key) == 0) {
       node = node->left;
-    } else {
+    } 
+    else {
       node = node->right;
     }
+    node = createTreeNode(key, value);
   }
 }
 
